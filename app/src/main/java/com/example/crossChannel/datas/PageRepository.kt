@@ -1,20 +1,37 @@
 package com.example.crossChannel.datas
 
+import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.MutableLiveData
 import com.example.crossChannel.R
 import java.util.*
 import kotlin.random.Random
-
-
-// 这个实体用来在没有涉及ROOM时模拟存取和读入
-// 在实际中并不会发挥作用
-object PseudoPageDataBase {
+import com.example.crossChannel.datas.MyDao
+import com.example.crossChannel.datas.PageDataBase
+// 间接读写ROOM中的数据
+// 在没有ROOM时，可以填写伪造的数据来进行测试
+// TODO:将ROOM中的基本类型包装为LiveData
+object PageRepository {
     var size = 0
+    private lateinit var myDao: MyDao
+    lateinit var pageEntities : List<PageEntity>
     private val Allpages : MutableList<PageEntity> = mutableListOf()
+
     fun insert(pageEntity: PageEntity){
         Allpages.add(pageEntity)
         size += 1
     }
     init{
+//        val db = PageDataBase.getDataBase()
+//        myDao = db.myDao()
+//        myDao.allEntity.observe(
+//            this,
+//            androidx.lifecycle.Observer {
+//                pageEntities = it
+//            }
+//        )
+        //fake datas
         val ran = Random.nextInt(10)
         size = ran
         for(i in 0..ran){
@@ -35,8 +52,9 @@ object PseudoPageDataBase {
     fun update(primaryKey: Int, date: Date){
         Allpages[primaryKey].delete(date)
     }
-    fun update(position: Int, primaryKey: Int, content: AItem){
-        Allpages[primaryKey].update(position, content)
+    fun update(primaryKey: Int, date: Date, content: String){
+        Allpages[primaryKey].update(date, content)
+        Log.d("hltn", "updating...")
     }
     fun delete(primaryKey: Int){
         for(i in 0..Allpages.size-1){

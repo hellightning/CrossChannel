@@ -6,4 +6,7 @@ import com.example.crossChannel.MainActivity
 import com.example.crossChannel.adpters.MyPageAdapter
 
 class MainViewModel():ViewModel() {
+    companion object{
+
+    }
 }

@@ -1,9 +1,10 @@
 package com.example.crossChannel
-
 import ZoomOutPageTransformer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.MutableLiveData
 import com.example.crossChannel.adpters.MyPageAdapter
 import com.example.crossChannel.anim.FabTransform
 import com.example.crossChannel.databinding.ActivityMainBinding
@@ -11,29 +12,23 @@ import com.example.crossChannel.datas.*
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
+import com.example.crossChannel.adpters.MyRecyclerAdapter
+import androidx.core.view.GravityCompat
+import android.util.Log
 
+
+// created by HYP
 class MainActivity : AppCompatActivity() {
     companion object{
         lateinit var binding: ActivityMainBinding
         var position : Int = 0
+        var recyclerAdapter = MyRecyclerAdapter(kotlin.collections.mutableListOf())
     }
     private lateinit var mainViewModel: MainViewModel
     private lateinit var pageAdapter: MyPageAdapter
-    private lateinit var myDao: MyDao
-    lateinit var pageEntities : List<PageEntity>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //数据库初始化
-//        val db = PageDataBase.getDataBase(this)
-//        myDao = db.myDao()
-//        myDao.allEntity.observe(
-//            this,
-//            androidx.lifecycle.Observer {
-//                pageEntities = it
-//            }
-//        )
-
         // 视图绑定
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -45,10 +40,19 @@ class MainActivity : AppCompatActivity() {
         pageAdapter = MyPageAdapter(this)
         binding.pager.adapter = pageAdapter
         binding.pager.setPageTransformer(ZoomOutPageTransformer())
-        binding.pager.currentItem = MyPageAdapter.pageNum - 1
+        binding.pager.currentItem = pageAdapter.getItemCount() - 1
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationIcon(R.drawable.ic_drawler)
+        binding.toolbar.setNavigationOnClickListener{
+            if(binding.drawer.isDrawerOpen(GravityCompat.START)){
+                binding.drawer.closeDrawer(GravityCompat.START)
+            }else{
+                binding.drawer.openDrawer(GravityCompat.START)
+            }
+            Log.d("hltn","nav click!")
+        }
         binding.btnDate.setOnClickListener {
+            //TODO: turn page with date selected
             val builder = MaterialDatePicker.Builder.datePicker()
             builder.setTitleText("Choose Date")
             builder.setSelection(Date().time)
@@ -64,21 +68,21 @@ class MainActivity : AppCompatActivity() {
             FabTransform.activateFabAnim(binding.fabText, h)
             FabTransform.activateFabAnim(binding.fabImage,h/2)
         }
-        /*
         binding.fabImage.setOnClickListener {
+            startActivity(
+                Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            )
+            PageRepository.update(position, ImageItem(R.drawable.scenery))
             val h = binding.fabs.height
-            pageAdapter.addItem(binding.pager.currentItem, ImageItem(R.drawable.scenery))
             FabTransform.activateFabAnim(binding.fabText, h)
             FabTransform.activateFabAnim(binding.fabImage,h/2)
         }
         binding.fabText.setOnClickListener {
             val h = binding.fabs.height
-            pageAdapter.addItem(binding.pager.currentItem, TextItem("wipe"))
+            PageRepository.update(position, TextItem("hello"))
             FabTransform.activateFabAnim(binding.fabText, h)
             FabTransform.activateFabAnim(binding.fabImage,h/2)
         }
-
-         */
     }
     override fun onResume() {
         super.onResume()

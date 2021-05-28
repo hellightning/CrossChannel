@@ -1,11 +1,9 @@
 package com.example.crossChannel.datas
 
-import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.crossChannel.MainActivity
 import java.util.*
-import kotlin.random.Random
-import com.example.crossChannel.R
 import com.example.crossChannel.adpters.MyRecyclerAdapter
 
 class PageViewModel: ViewModel(){
@@ -15,9 +13,9 @@ class PageViewModel: ViewModel(){
     lateinit var adapter : MyRecyclerAdapter
     init {
         //TODO(get data from ROOM)
-        date = PseudoPageDataBase.query(MainActivity.position).date
-        title = PseudoPageDataBase.query(MainActivity.position).title
-        items = PseudoPageDataBase.query(MainActivity.position).items
+        date = PageRepository.query(MainActivity.position).date
+        title = PageRepository.query(MainActivity.position).title
+        items = PageRepository.query(MainActivity.position).items
         adapter = MyRecyclerAdapter(items)
     }
     fun addData(type: Int, item: AItem){
@@ -32,10 +30,6 @@ class PageViewModel: ViewModel(){
     fun removeData(position: Int){
         items.removeAt(position)
         adapter.notifyItemRemoved(position)
-    }
-    fun removeData(note: String){
-        val x = items.indexOf(TextItem(note))
-        removeData(x)
     }
     fun removeData(date :Date){
         var x = 0

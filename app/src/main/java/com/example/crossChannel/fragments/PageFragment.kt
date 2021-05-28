@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.crossChannel.MainActivity
-import com.example.crossChannel.adpters.MyPageAdapter
 import com.example.crossChannel.adpters.MyRecyclerAdapter
 import com.example.crossChannel.databinding.FragmentPageBinding
 import com.example.crossChannel.datas.PageViewModel
@@ -19,7 +18,6 @@ import java.util.*
 class PageFragment(position: Int) : Fragment() {
     private lateinit var binding: FragmentPageBinding
     lateinit var fragmentPageViewModel : PageViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //创建viewmodel
@@ -30,10 +28,16 @@ class PageFragment(position: Int) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //用数据绑定代替视图绑定？ update：没有需求
+
+//        binding = DataBindingUtil.inflate<PageFragmentBinding>(
+//            inflater,
+//            R.layout.fragment_page,
+//            false
+//        )
         binding = FragmentPageBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onStart() {
         Log.d("hltn", "starting fragment")
         super.onStart()
@@ -48,4 +52,10 @@ class PageFragment(position: Int) : Fragment() {
             .format(fragmentPageViewModel.date)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(MainActivity.recyclerAdapter != fragmentPageViewModel.adapter){
+            MainActivity.recyclerAdapter = fragmentPageViewModel.adapter
+        }
+    }
 }

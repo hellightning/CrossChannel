@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.crossChannel.MainActivity
 import com.example.crossChannel.databinding.ImageItemBinding
 import com.example.crossChannel.datas.ImageItem
-import com.example.crossChannel.datas.PseudoPageDataBase
+import com.example.crossChannel.datas.PageRepository
 import java.util.*
 
 class ImageViewHolder(private val binding : ImageItemBinding): RecyclerView.ViewHolder(binding.root) {
@@ -14,7 +14,7 @@ class ImageViewHolder(private val binding : ImageItemBinding): RecyclerView.View
         binding.ivTest.setImageResource(item.imageId)
         binding.timeStamp = item.timeStamp
         binding.ivTest.setOnLongClickListener {
-                PseudoPageDataBase.update(MainActivity.position, binding.timeStamp as Date)
+                PageRepository.update(MainActivity.position, binding.timeStamp as Date)
             true
         }
     }
