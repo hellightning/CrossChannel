@@ -9,6 +9,9 @@ import java.util.*
 import kotlin.random.Random
 import com.example.crossChannel.datas.MyDao
 import com.example.crossChannel.datas.PageDataBase
+import com.example.crossChannel.MainActivity
+import java.text.SimpleDateFormat
+
 // 间接读写ROOM中的数据
 // 在没有ROOM时，可以填写伪造的数据来进行测试
 // TODO:将ROOM中的基本类型包装为LiveData
@@ -56,8 +59,13 @@ object PageRepository {
         Allpages[primaryKey].update(date, content)
         Log.d("hltn", "updating...")
     }
+    fun update(primaryKey: Int, content: String){
+        Log.d("hltn", Allpages[primaryKey].title)
+        Allpages[primaryKey].title = content
+        Log.d("hltn", Allpages[primaryKey].title)
+    }
     fun delete(primaryKey: Int){
-        for(i in 0..Allpages.size-1){
+        for(i in 0..MainActivity.position){
             if(Allpages[i].pseudoKey == primaryKey){
                 Allpages.removeAt(i)
             }
@@ -66,5 +74,14 @@ object PageRepository {
     }
     fun query(position: Int) : PageEntity{
         return Allpages[position]
+    }
+    fun findPageWithDate(date : Date): Int?{
+        val ft = SimpleDateFormat("yyyy-MM-dd")
+        for(i in 0..MainActivity.position){
+            if(ft.format(date) == ft.format(Allpages[i].date)){
+                return i
+            }
+        }
+        return null
     }
 }

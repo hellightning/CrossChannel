@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.crossChannel.MainActivity
+import com.example.crossChannel.databinding.DrawerMenuBinding
 import com.example.crossChannel.databinding.ImageItemBinding
 import com.example.crossChannel.datas.ImageItem
 import com.example.crossChannel.datas.PageRepository
@@ -25,6 +26,7 @@ class ImageViewHolder(private val binding : ImageItemBinding): RecyclerView.View
             Log.d("hltn","image delete clicked")
             PageRepository.update(MainActivity.position, binding.timeStamp as Date)
         }
+
     }
     companion object{
         fun from(parent:ViewGroup) : ImageViewHolder{

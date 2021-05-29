@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.crossChannel.MainActivity
 import com.example.crossChannel.adpters.MyRecyclerAdapter
 import com.example.crossChannel.databinding.FragmentPageBinding
+import com.example.crossChannel.datas.PageRepository
 import com.example.crossChannel.datas.PageViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,7 +48,7 @@ class PageFragment(position: Int) : Fragment() {
         binding.recycler.adapter = fragmentPageViewModel.adapter
         binding.recycler.isNestedScrollingEnabled = true
         binding.recycler.itemAnimator
-        MainActivity.binding.toolbar.title = fragmentPageViewModel.title
+
         MainActivity.binding.btnDate.text = SimpleDateFormat("yyyy-MMM-dd-E", Locale.US)
             .format(fragmentPageViewModel.date)
     }
@@ -57,5 +58,6 @@ class PageFragment(position: Int) : Fragment() {
         if(MainActivity.recyclerAdapter != fragmentPageViewModel.adapter){
             MainActivity.recyclerAdapter = fragmentPageViewModel.adapter
         }
+        //TODO: use LiveDate to simple the logic
     }
 }

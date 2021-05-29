@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.crossChannel.adpters.MyPageAdapter
 import com.example.crossChannel.anim.FabTransform
 import com.example.crossChannel.databinding.ActivityMainBinding
+import com.example.crossChannel.databinding.DrawerMenuBinding
 import com.example.crossChannel.datas.*
 import com.example.crossChannel.datas.PageEntity
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -52,17 +53,17 @@ class MainActivity : AppCompatActivity() {
             }
             Log.d("hltn","nav click!")
         }
+        // 翻到指定日期的第一页
         binding.btnDate.setOnClickListener {
-            //TODO: turn page with date selected
             val builder = MaterialDatePicker.Builder.datePicker()
             builder.setTitleText("Choose Date")
             builder.setSelection(Date().time)
             val picker = builder.build()
+            var page : Int? = 0
             picker.addOnPositiveButtonClickListener {
-                binding.btnDate.text = SimpleDateFormat("yyyy-MMM-dd-E", Locale.US)
-                    .format(Date(it))
+                page = PageRepository.findPageWithDate(Date(it))
             }
-            picker.show(supportFragmentManager, null)
+            binding.pager.setCurrentItem(page!!)
         }
         binding.fabs.setOnClickListener {
             val h = binding.fabs.height
@@ -84,22 +85,32 @@ class MainActivity : AppCompatActivity() {
             FabTransform.activateFabAnim(binding.fabText, h)
             FabTransform.activateFabAnim(binding.fabImage,h/2)
         }
-        binding.drawerBtns.btnNewpage.setOnClickListener {
-            PageRepository.insert(PageEntity(position+1, Date(), "untitled", mutableListOf()))
-            binding.pager.currentItem = position + 1
+        binding.btnNewpage.setOnClickListener {
+            PageRepository.insert(PageEntity(MainActivity.position+1, Date(), "untitled", mutableListOf()))
+            //binding.pager.adapter.createFragment(position+1)
+            Log.d("hltn", "creating new page")
+            binding.pager.adapter?.notifyDataSetChanged()
+            binding.pager.setCurrentItem(position+1, true)
+            position += 1
         }
-        binding.drawerBtns.btnRename.setOnClickListener {
-
+        binding.btnRename.setOnClickListener {
+            PageRepository.update(position, "modified")
+            supportActionBar?.title = "modified"
         }
-        binding.drawerBtns.btnChange.setOnClickListener {
-
+        binding.btnChange.setOnClickListener {
+            //TODO: change the theme of the app
         }
-        binding.drawerBtns.btnDelpage.setOnClickListener {
-
+        binding.btnDelpage.setOnClickListener {
+            if(position != 0){
+                PageRepository.delete(position)
+                binding.pager.currentItem = position - 1
+                binding.pager.adapter?.notifyDataSetChanged()
+            }
         }
     }
     override fun onResume() {
         super.onResume()
         position = binding.pager.currentItem
+
     }
 }
