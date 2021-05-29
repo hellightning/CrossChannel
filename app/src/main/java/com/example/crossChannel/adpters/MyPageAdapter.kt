@@ -19,7 +19,6 @@ class MyPageAdapter(fa: FragmentActivity): FragmentStateAdapter(fa) {
         //TODO(init first PAGE and store)
     }
     override fun getItemCount(): Int {
-        //TODO(get size of ROOM)
         return PageRepository.size
     }
     override fun createFragment(position: Int): Fragment {

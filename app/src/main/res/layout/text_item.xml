@@ -34,6 +34,8 @@
             android:id="@+id/btnDelete"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:background="@drawable/mask"
+            android:longClickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textInputLayout"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +55,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tvContent"
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="20sp" />

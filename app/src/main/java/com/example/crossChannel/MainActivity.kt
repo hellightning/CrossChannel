@@ -9,6 +9,7 @@ import com.example.crossChannel.adpters.MyPageAdapter
 import com.example.crossChannel.anim.FabTransform
 import com.example.crossChannel.databinding.ActivityMainBinding
 import com.example.crossChannel.datas.*
+import com.example.crossChannel.datas.PageEntity
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.util.*
@@ -82,6 +83,19 @@ class MainActivity : AppCompatActivity() {
             PageRepository.update(position, TextItem("hello"))
             FabTransform.activateFabAnim(binding.fabText, h)
             FabTransform.activateFabAnim(binding.fabImage,h/2)
+        }
+        binding.drawerBtns.btnNewpage.setOnClickListener {
+            PageRepository.insert(PageEntity(position+1, Date(), "untitled", mutableListOf()))
+            binding.pager.currentItem = position + 1
+        }
+        binding.drawerBtns.btnRename.setOnClickListener {
+
+        }
+        binding.drawerBtns.btnChange.setOnClickListener {
+
+        }
+        binding.drawerBtns.btnDelpage.setOnClickListener {
+
         }
     }
     override fun onResume() {
