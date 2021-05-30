@@ -20,22 +20,21 @@ class PageEntity(
 ){
     fun update(date: Date, content: String){
         for(item in items){
-            if(item.timeStamp == date && item is TextItem){
-                    Log.d("hltn", "found "+item.content)
-                (item as TextItem).content = content
-                Log.d("hltn", "updated:"+item.content)
+            if(item.timeStamp == date && item.type == constants.TEXT_VIEW_TYPE){
+                (item).content = content
+                break
             }
         }
     }
     fun delete(position: Int){
         items.removeAt(position)
-        //TODO notify
+        MainActivity.recyclerAdapter.notifyItemRemoved(position)
     }
     fun delete(date : Date){
         for(i in 0..items.size-1){
             if(items[i].timeStamp == date){
                 delete(i)
-                MainActivity.recyclerAdapter.notifyItemRemoved(i)
+
                 break
             }
         }

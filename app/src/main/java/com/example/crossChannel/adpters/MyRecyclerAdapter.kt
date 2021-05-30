@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.crossChannel.R
 import com.example.crossChannel.datas.*
 
-class MyRecyclerAdapter(private val data: List<AItem>)
+class MyRecyclerAdapter(val pagePosition : Int)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
     : RecyclerView.ViewHolder {
@@ -21,24 +21,19 @@ class MyRecyclerAdapter(private val data: List<AItem>)
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return PageRepository.Allpages[pagePosition].items.size
     }
 
     override fun getItemViewType(position: Int): Int {
-        val item = data[position]
-        return when(item){
-            is TextItem -> constants.TEXT_VIEW_TYPE
-            is ImageItem -> constants.IMAGE_VIEW_TYPE
-            else -> 0
-        }
+        return PageRepository.Allpages[pagePosition].items[position].type
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder,
                                   position: Int) {
-        val item = data[position]
-        if(holder is TextItemViewHolder && item is TextItem){
+        val item = PageRepository.Allpages[pagePosition].items[position]
+        if(holder is TextItemViewHolder && item.type == constants.TEXT_VIEW_TYPE){
             holder.bind(item)
-        }else if (holder is ImageViewHolder && item is ImageItem){
+        }else if (holder is ImageViewHolder && item.type == constants.IMAGE_VIEW_TYPE){
             holder.bind(item)
         }
     }

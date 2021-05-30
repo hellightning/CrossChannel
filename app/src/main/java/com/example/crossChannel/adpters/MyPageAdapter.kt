@@ -11,9 +11,7 @@ class MyPageAdapter(fa: FragmentActivity): FragmentStateAdapter(fa) {
     companion object{
         //data of a page
         lateinit var date : Date
-        var data : MutableList<AItem> = mutableListOf()
         var title : String = "Untitled"
-        var adapter = MyRecyclerAdapter(data)
     }
     init{
         //TODO(init first PAGE and store)

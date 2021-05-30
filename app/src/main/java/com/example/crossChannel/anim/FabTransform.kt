@@ -13,7 +13,6 @@ object FabTransform {
         anim.duration = 500
         anim.interpolator = OvershootInterpolator()
         anim.start()
-        Log.d("hltn", "visisble now")
         view.visibility = View.VISIBLE
     }
     fun hideView(view: View, from: Float) {

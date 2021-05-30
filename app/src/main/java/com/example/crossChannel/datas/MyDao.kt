@@ -15,5 +15,5 @@ interface MyDao {
     @Query("SELECT * FROM pageEntities WHERE pseudoKey>=:pseudoKey")
     fun getEntities(pseudoKey : Int):List<PageEntity>
     @get:Query("SELECT * FROM pageEntities")
-    val allEntity:LiveData<List<PageEntity>>
+    val allEntity:LiveData<MutableList<PageEntity>>
 }

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.crossChannel.MainActivity
 import com.example.crossChannel.databinding.TextItemBinding
 import com.example.crossChannel.datas.PageRepository
-import com.example.crossChannel.datas.TextItem
+import com.example.crossChannel.datas.AItem
 import java.text.SimpleDateFormat
 import androidx.lifecycle.Observer
 import com.example.crossChannel.R
@@ -22,7 +22,7 @@ inflate item layouts with my data
 class TextItemViewHolder private constructor(val binding : TextItemBinding)
     : RecyclerView.ViewHolder(binding.root){
     // TODO viewBinding
-    fun bind(item: TextItem){
+    fun bind(item: AItem){
         //binding.tvContent.text = item.content as Editable
         binding.timeStamp = item.timeStamp
         binding.tvContent.setText(

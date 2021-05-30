@@ -16,7 +16,7 @@ import com.example.crossChannel.datas.PageViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PageFragment(position: Int) : Fragment() {
+class PageFragment(val position: Int) : Fragment() {
     private lateinit var binding: FragmentPageBinding
     lateinit var fragmentPageViewModel : PageViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +24,8 @@ class PageFragment(position: Int) : Fragment() {
         //创建viewmodel
         fragmentPageViewModel = ViewModelProvider(this)
             .get(PageViewModel::class.java)
+        //初始化ViewModel
+        fragmentPageViewModel.initPageVM(position)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,11 +42,12 @@ class PageFragment(position: Int) : Fragment() {
         return binding.root
     }
     override fun onStart() {
-        Log.d("hltn", "starting fragment")
         super.onStart()
+        Log.d("hltn", "starting..."+fragmentPageViewModel.adapter.toString())
+        Log.d("hltn","MAIN:"+MainActivity.recyclerAdapter.toString())
         // 这里可以改用Gird或StaggeredGird进行多样化，看开发状况
         binding.recycler.layoutManager = LinearLayoutManager(activity)
-        val adapter = MyRecyclerAdapter(fragmentPageViewModel.items)
+        val adapter = MyRecyclerAdapter(position)
         binding.recycler.adapter = fragmentPageViewModel.adapter
         binding.recycler.isNestedScrollingEnabled = true
         binding.recycler.itemAnimator
@@ -55,9 +58,18 @@ class PageFragment(position: Int) : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         if(MainActivity.recyclerAdapter != fragmentPageViewModel.adapter){
             MainActivity.recyclerAdapter = fragmentPageViewModel.adapter
         }
+        Log.d("hltn","resuming..."+fragmentPageViewModel.adapter.toString())
+        Log.d("hltn","MAIN:"+MainActivity.recyclerAdapter.toString())
         //TODO: use LiveDate to simple the logic
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("hltn", "stopping..." + fragmentPageViewModel.adapter.toString())
+        Log.d("hltn","MAIN:"+MainActivity.recyclerAdapter.toString())
     }
 }
